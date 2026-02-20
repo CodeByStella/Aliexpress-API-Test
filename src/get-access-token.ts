@@ -13,9 +13,9 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import * as crypto from 'crypto';
 import * as https from 'https';
 import type { IncomingMessage } from 'http';
+import { signParams } from './utils/sign';
 
 function loadEnv(envPath: string): void {
   if (!fs.existsSync(envPath)) return;
@@ -55,15 +55,7 @@ const params: Record<string, string> = {
   timestamp,
 };
 
-const sortedKeys = Object.keys(params).sort();
-const signString = API_NAME + sortedKeys.map((k) => k + params[k]).join('');
-const sign = crypto
-  .createHmac('sha256', APP_SECRET)
-  .update(signString, 'utf8')
-  .digest('hex')
-  .toUpperCase();
-
-params.sign = sign;
+params.sign = signParams(params, APP_SECRET, { prefix: API_NAME });
 
 const body = JSON.stringify(params);
 
