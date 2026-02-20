@@ -14,6 +14,7 @@ import * as path from 'path';
 import * as https from 'https';
 import type { IncomingMessage } from 'http';
 import { signParams } from './utils/sign';
+import type { DsTextSearchResponse } from './types';
 
 function loadEnv(envPath: string): void {
   if (!fs.existsSync(envPath)) return;
@@ -83,8 +84,12 @@ const req = https.request(
       console.log('HTTP status:', res.statusCode);
       console.log('Response:', data);
       try {
-        const json: unknown = JSON.parse(data);
-        console.log(JSON.stringify(json, null, 2));
+        const json = JSON.parse(data) as DsTextSearchResponse;
+        if (json.error_response) {
+          console.log('Error:', json.error_response.msg ?? json.error_response.code);
+        } else {
+          console.log(JSON.stringify(json, null, 2));
+        }
       } catch {
         // ignore parse error
       }

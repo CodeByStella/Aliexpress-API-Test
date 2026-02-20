@@ -16,6 +16,7 @@ import * as path from 'path';
 import * as https from 'https';
 import type { IncomingMessage } from 'http';
 import { signParams } from './utils/sign';
+import type { TokenCreateResponse } from './types';
 
 function loadEnv(envPath: string): void {
   if (!fs.existsSync(envPath)) return;
@@ -79,8 +80,10 @@ const req = https.request(
       console.log('HTTP status:', res.statusCode);
       console.log('Response:', data);
       try {
-        const json: Record<string, unknown> = JSON.parse(data);
-        if (json.access_token) {
+        const json = JSON.parse(data) as TokenCreateResponse;
+        if (json.error_response) {
+          console.log('Error:', json.error_response.msg ?? json.error_response.code);
+        } else if (json.access_token) {
           console.log('\naccess_token:', json.access_token);
           console.log('expires_in:', json.expires_in);
           if (json.refresh_token) console.log('refresh_token:', json.refresh_token);
