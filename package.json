@@ -1,0 +1,14 @@
+{
+  "name": "alishit",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "token": "node dist/get-access-token.js",
+    "search": "node dist/search-product.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
