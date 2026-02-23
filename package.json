@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc",
     "token": "node dist/get-access-token.js",
+    "refresh": "node dist/refresh-token.js",
     "search": "node dist/search-product.js"
   },
   "devDependencies": {

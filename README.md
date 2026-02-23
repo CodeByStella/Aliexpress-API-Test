@@ -40,7 +40,8 @@ TypeScript scripts for [AliExpress Open Platform](https://openservice.aliexpress
 | ---------------- | ----------------------------------------------------------------------------------------- |
 | `npm run build`  | Compile TypeScript in `src/` to `dist/`                                                   |
 | `npm run token`  | Exchange `AUTH_CODE` for `access_token` and `refresh_token` (POST to api-sg token create) |
-| `npm run search` | Search products by keyword “mouse” for Japan (JP, JPY) via aliexpress.ds.text.search      |
+| `npm run refresh` | Get new `access_token` using `refresh_token` from `.env` (POST /auth/token/refresh)          |
+| `npm run search`  | Search products by keyword “mouse” for Japan (JP, JPY) via aliexpress.ds.text.search      |
 
 ## Getting an access token
 
@@ -49,6 +50,16 @@ TypeScript scripts for [AliExpress Open Platform](https://openservice.aliexpress
 2. Open that URL in a browser, sign in, and authorize. You’ll be redirected to your `REDIRECT_URI` with a `code` query parameter.
 3. Put that `code` in `.env` as `AUTH_CODE`.
 4. Run `npm run token`. Copy the printed `access_token` and `refresh_token` into `.env`.
+
+## Refreshing the token
+
+When `access_token` expires, use the saved `refresh_token` to get a new one (no need to re-authorize). Ensure `refresh_token` is set in `.env`, then run:
+
+```bash
+npm run refresh
+```
+
+Copy the new `access_token` and `refresh_token` from the output into `.env`. The doc recommends refreshing about 30 minutes before the access token expires.
 
 ## References
 
